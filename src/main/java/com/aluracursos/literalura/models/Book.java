@@ -9,9 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.CascadeType;
 
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -26,7 +28,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn()
     private Author author;
 
@@ -49,17 +51,37 @@ public class Book {
     @Column()
     private Integer download_count;
 
+    public Book(){}
 
+    public Book(BookApi bookApi){
+        this.title = bookApi.title();
+
+        Optional<AuthorApi> author = bookApi.authors().stream().findFirst();
+
+        if(author.isPresent()){
+            this.author = new Author(author.get());
+        }
+
+        if(author.isEmpty()){
+            this.author = new Author("desconocido",0,0);
+        }
+
+        this.subjects = bookApi.subjects();
+        this.bookshelves = bookApi.bookshelves();
+        this.languages = bookApi.languages();
+        this.copyright = bookApi.copyright();
+        this.download_count = bookApi.download_count();
+
+    }
     @Override
     public String toString() {
-        return  "id=" + id +
-                ", author=" + author +
-                ", title='" + title + '\'' +
-                ", subjects=" + subjects +
-                ", bookshelves=" + bookshelves +
-                ", languages=" + languages +
-                ", copyright=" + copyright +
-                ", download_count=" + download_count;
+        return  "__________Libro__________\n" +
+                "titulo ='" + title + "\n" +
+                author + "\n" +
+                "temas =" + subjects + "\n" +
+                "idiomas =" + languages + "\n" +
+                "descargas =" + download_count + "\n" +
+                "-------------------------";
     }
 
     public Long getId() {

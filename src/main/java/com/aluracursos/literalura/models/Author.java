@@ -38,14 +38,33 @@ public class Author {
             cascade = CascadeType.ALL)
     private List<Book> book;
 
+    public Author(){}
 
+    public Author(AuthorApi authorApi){
+        if(authorApi.name().isEmpty()){
+            this.name = "desconocido";
+        }else {
+            this.name = authorApi.name();
+        }
+        try{
+            this.birth_year = authorApi.birth_year();
+            this.death_year = authorApi.death_year();
+        }catch (NumberFormatException e){
+            this.birth_year = 0;
+            this.death_year = 0;
+        }
+    }
+
+    public Author (String name, int birth_year, int death_year){
+        this.name = name;
+        this.birth_year = birth_year;
+        this.death_year = death_year;
+    }
     @Override
     public String toString() {
-        return  "id=" + id +
-                ", name='" + name + '\'' +
-                ", birth_year=" + birth_year +
-                ", death_year=" + death_year +
-                ", book=" + book ;
+        return   name  +"\n" +
+                "fecha de nacimiento = " + birth_year +"\n" +
+                "fecha de fallecimiento = " + death_year ;
     }
 
     public Long getId() {
