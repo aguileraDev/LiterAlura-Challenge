@@ -6,7 +6,13 @@ import com.aluracursos.literalura.services.Api;
 import com.aluracursos.literalura.services.Converter;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import java.util.*;
+import java.util.Scanner;
+import java.util.List;
+import java.util.Optional;
+import java.util.Comparator;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+
 import java.util.stream.Collectors;
 
 
